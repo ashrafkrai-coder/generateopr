@@ -145,7 +145,7 @@
           <label class="check"><input type="checkbox" id="sigInput" checked> Papar ruang tandatangan</label>
           <div class="extra-grid"><div class="field"><label for="preparedInput">Disediakan oleh</label><input class="input" id="preparedInput" maxlength="70" placeholder="Nama / jawatan"></div><div class="field"><label for="approvedInput">Disahkan oleh</label><input class="input" id="approvedInput" maxlength="70" placeholder="Nama / jawatan"></div></div>
         </div></details>
-        <div class="field"><label for="attendanceInput">Jumlah kehadiran <span class="required">*</span></label><input class="input" id="attendanceInput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" placeholder="Contoh: 120" required><div class="hint">Masukkan jumlah peserta yang hadir (nombor bulat).</div></div>
+        <div class="field"><label for="attendanceInput">Jumlah kehadiran <small>(pilihan)</small></label><input class="input" id="attendanceInput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" placeholder="Contoh: 120"><div class="hint">Masukkan jumlah peserta yang hadir (nombor bulat).</div></div>
         <div class="field"><div class="photo-head"><span class="field-label">Gambar aktiviti <span class="required">*</span></span><span class="counter" id="photoCounter">0 / 6 gambar</span></div><div class="photo-drop" id="photoDrop"><input id="photoInput" type="file" accept="image/*" multiple aria-label="Pilih gambar aktiviti"><div class="photo-icon">＋</div><strong>Pilih atau seret gambar ke sini</strong><span>JPG atau PNG · maksimum 6 gambar · dimampatkan automatik</span></div><div class="thumbs" id="thumbs"></div><div class="hint">Tip: pilih 2 hingga 4 gambar yang jelas. Gambar pertama ialah gambar utama; guna ‹ › untuk tukar susunan.</div></div>
         <div class="form-bottom"><button class="quiet-btn" id="resetButton" type="button">Kosongkan</button><button class="quiet-btn" id="printButton" type="button" disabled>Cetak</button><button class="primary-btn" id="pdfButton" type="button" disabled>PDF A4&nbsp; ↓</button></div>
         <div class="privacy"><span>●</span><div>Logo dan gambar kekal pada peranti ini; tiada fail dihantar ke pelayan. Nama sekolah, logo dan tema diingati pada peranti ini sahaja. <button class="link-btn" id="forgetButton" type="button">Lupakan data sekolah</button></div></div>
@@ -155,7 +155,7 @@
         <div class="paper-wrap"><div class="sheet-scaler" id="scaler"><article class="sheet" id="sheet">
           <header class="report-head no-logo" id="reportHead"><div id="logoSlot"></div><div><div class="school-name" id="reportSchool">NAMA SEKOLAH</div><div class="school-sub">DOKUMENTASI AKTIVITI SEKOLAH</div></div><div class="opr-label">ONE PAGE<br>REPORT</div></header>
           <section class="activity-block"><div class="activity-kicker">Laporan aktiviti</div><h2 class="activity-title" id="reportActivity">NAMA AKTIVITI</h2><div class="activity-rule"></div></section>
-          <section class="report-meta"><div class="meta-item"><small>Hari &amp; tarikh</small><b id="reportDate">—</b></div><div class="meta-item"><small>Kehadiran</small><b id="reportAttendance">— orang</b></div><div class="meta-item" id="venueMeta"><small>Tempat</small><b id="reportVenue">—</b></div><div class="meta-item" id="organizerMeta"><small>Penganjur</small><b id="reportOrganizer">—</b></div><div class="meta-item" id="targetMeta"><small>Kumpulan sasaran</small><b id="reportTarget">—</b></div><div class="meta-item" id="timeMeta"><small>Masa</small><b id="reportTime">—</b></div></section>
+          <section class="report-meta"><div class="meta-item"><small>Hari &amp; tarikh</small><b id="reportDate">—</b></div><div class="meta-item" id="attendMeta"><small>Kehadiran</small><b id="reportAttendance">— orang</b></div><div class="meta-item" id="venueMeta"><small>Tempat</small><b id="reportVenue">—</b></div><div class="meta-item" id="organizerMeta"><small>Penganjur</small><b id="reportOrganizer">—</b></div><div class="meta-item" id="targetMeta"><small>Kumpulan sasaran</small><b id="reportTarget">—</b></div><div class="meta-item" id="timeMeta"><small>Masa</small><b id="reportTime">—</b></div></section>
           <section class="report-sections"><div class="report-section" id="objectiveSection"><small>Objektif</small><p id="reportObjective">—</p></div><div class="report-section" id="implementationSection"><small>Ringkasan pelaksanaan</small><p id="reportImplementation">—</p></div><div class="report-section" id="impactSection"><small>Hasil / impak</small><p id="reportImpact">—</p></div><div class="report-section" id="strengthSection"><small>Kekuatan</small><p id="reportStrength">—</p></div><div class="report-section" id="weaknessSection"><small>Kelemahan / cabaran</small><p id="reportWeakness">—</p></div><div class="report-section wide" id="improvementSection"><small>Cadangan penambahbaikan</small><p id="reportImprovement">—</p></div></section>
           <div class="signatures" id="signatures"><div>Disediakan oleh:<div class="sig-space"></div><b id="reportPrepared"></b></div><div>Disahkan oleh:<div class="sig-space"></div><b id="reportApproved"></b></div></div>
           <div class="gallery-head"><div class="gallery-title">Sorotan aktiviti</div><div class="gallery-count" id="reportPhotoCount">GAMBAR AKTIVITI</div></div>
@@ -265,8 +265,7 @@
         if(!schoolInput.value.trim())m.push('nama sekolah');
         if(!activityInput.value.trim())m.push('nama aktiviti');
         if(!dateInput.value)m.push('tarikh');
-        if(attendanceInput.value==='')m.push('kehadiran');
-        if(!photos.length)m.push('gambar');
+                if(!photos.length)m.push('gambar');
         return m;
       }
       function fitContent(){
@@ -286,7 +285,7 @@
         dayInput.value=dateInput.value?dayOf(dateInput.value):'';
         dateEndInput.min=dateInput.value||'';
         $('reportDate').textContent=dateLine();
-        $('reportAttendance').textContent=attendanceInput.value?`${Number(attendanceInput.value).toLocaleString('ms-MY')} orang`:'— orang';
+        $('reportAttendance').textContent=attendanceInput.value?`${Number(attendanceInput.value).toLocaleString('ms-MY')} orang`:'';$('attendMeta').hidden=!attendanceInput.value;
         Object.entries(fieldMap).forEach(([inId,outId])=>{
           const v=$(inId).value.trim();$(outId).textContent=v||'—';
           if(sectionOf[inId])$(sectionOf[inId]).hidden=!v;
