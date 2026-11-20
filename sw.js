@@ -1,4 +1,4 @@
-const CACHE_NAME = 'opr-sekolah-pwa-v3';
+const CACHE_NAME = 'opr-sekolah-pwa-v2';
 const APP_SHELL = [
   './',
   './index.html',
